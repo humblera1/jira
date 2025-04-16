@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${JIRA_DB_NAME}
+      MYSQL_USER: ${JIRA_DB_USER}
+      MYSQL_PASSWORD: ${JIRA_DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - web
+
+  jira:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - ATL_DB_TYPE=mysql
+      - ATL_JIRA_DB_HOST=mysql
+      - ATL_JIRA_DB_PORT=3306
+      - ATL_JIRA_DB_NAME=${JIRA_DB_NAME}
+      - ATL_JIRA_DB_USER=${JIRA_DB_USER}
+      - ATL_JIRA_DB_PASSWORD=${JIRA_DB_PASSWORD}
+      - ATL_JIRA_HOME=/var/atlassian/jira
+    ports:
+      - "${EXTERNAL_PORT:-8181}:8080"
+    volumes:
+      - jira-data:/var/atlassian/jira
+    depends_on:
+      - mysql
+    networks:
+      - web
+
+volumes:
+  mysql-data:
+  jira-data:
+
+networks:
+  web:
+    driver: bridge
