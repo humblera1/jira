@@ -26,6 +26,9 @@ services:
       - ATL_JIRA_DB_USER=${JIRA_DB_USER}
       - ATL_JIRA_DB_PASSWORD=${JIRA_DB_PASSWORD}
       - ATL_JIRA_HOME=/var/atlassian/jira
+      - ATL_TOMCAT_PROXY_NAME=${JIRA_DOMAIN}
+      - ATL_TOMCAT_SCHEME=https
+      - ATL_TOMCAT_PROXY_PORT=443
     ports:
       - "${EXTERNAL_PORT:-8181}:8080"
     volumes:
