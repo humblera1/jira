@@ -73,8 +73,10 @@
 Для генерации необходимо подключиться к контейнеру и использовать описанный файл. Вы можете воспользоваться следующим шаблоном команды:
 
    ```bash
-   docker exec -it jira java -jar /opt/atlassian/jira/atlassian-agent.jar -d -m [your-email] -n BAT -p jira -o [host] -s [server-id]
+   java -jar /opt/atlassian/jira/atlassian-agent.jar -d -m [your-email] -n BAT -p jira -o [host] -s [server-id]
    ```
+
+Команду необходимо выполнять в докер-контейнере (`docker compose exec -it jira`).
 
 ## Остановка приложения
 
